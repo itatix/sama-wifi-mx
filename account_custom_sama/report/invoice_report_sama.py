@@ -163,7 +163,7 @@ class InvoiceReportSama(models.Model):
                         line_domain = [('date_order', '>=', date_begin), ('date_order', '<=', date_end)]
                         print('line_domain', line_domain, '\n')
 
-                    if 'team_id' in line:
+                    if 'team_id' in line and line['team_id']:
                         team_id = line['team_id'][0]
                         team = self.env['crm.team'].browse(int(team_id))
                         line_domain = expression.AND([line_domain, [('user_id','in',team.member_ids.ids)]])
@@ -176,7 +176,5 @@ class InvoiceReportSama(models.Model):
 
                 if 'achieve_perct' in line:
                     line['achieve_perct'] = line.get('price_subtotal', 0.0) * 100.0 / (line.get('amount_target', 0.0) or 1.0)
-        elif 'date_order' in groupby:
-            pass
 
         return result
