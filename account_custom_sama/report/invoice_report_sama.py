@@ -98,7 +98,7 @@ class InvoiceReportSama(models.Model):
     @api.model
     def _where(self):
         return '''
-            WHERE move.move_type IN ('out_invoice', 'out_refund')
+            WHERE move.move_type IN ('out_invoice')
                 AND move.state NOT IN ('draft', 'cancel')
                 AND line.account_id IS NOT NULL
                 AND NOT line.exclude_from_invoice_tab
@@ -122,7 +122,7 @@ class InvoiceReportSama(models.Model):
 
         date_domain.reverse()
 
-        if 'invoice_user_id' in groupby:
+        if 'user_id' in groupby:
             for line in result:
                 if 'amount_target' in line:
                     line['amount_target'] = 0.0
@@ -136,8 +136,8 @@ class InvoiceReportSama(models.Model):
                         date_end = "%s-%.2d-%.2d"%(date[1], month, last)
                         line_domain = [('date_order', '>=', date_begin), ('date_order', '<=', date_end)]
 
-                    if 'invoice_user_id' in line:
-                        line_domain = expression.AND([line_domain, [('user_id','=',line['invoice_user_id'][0])]])
+                    if 'user_id' in line:
+                        line_domain = expression.AND([line_domain, [('user_id','=',line['user_id'][0])]])
                         target_lines = self.env['sales.target.lines'].search(line_domain)
                         amount_target = sum(target_lines.mapped('monthly_target'))
                         line['amount_target'] = amount_target

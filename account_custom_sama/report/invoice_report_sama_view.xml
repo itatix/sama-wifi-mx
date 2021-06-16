@@ -6,7 +6,7 @@
          <field name="model">invoice.report.sama</field>
          <field name="arch" type="xml">
              <pivot string="Invoices Quota Analysis" disable_linking="True" sample="1">
-                 <field name="date_order" type="col"/>
+                 <field name="date_order" type="row"/>
                  <field name="price_subtotal" type="measure"/>
                  <field name="amount_target" type="measure"/>
                  <field name="gap" type="measure"/>
