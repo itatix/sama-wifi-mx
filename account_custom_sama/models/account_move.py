@@ -26,4 +26,9 @@ class AccountMove(models.Model):
             move.product_id = False
             for line in move.invoice_line_ids.filtered(lambda l: l.product_id):
                 move.product_id =  line.product_id
+
+class SalesTargetLines(models.Model):
+    _inherit = "sales.target.lines"
+
+    team_id = fields.Many2one(related='target_id.sales_team_id')
             
